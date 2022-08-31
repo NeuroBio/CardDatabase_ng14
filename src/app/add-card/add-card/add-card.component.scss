@@ -1,0 +1,96 @@
+@import '../../Variables.scss';
+
+form {
+    position: relative;
+    background-color: $palette2;
+    padding: 1em;
+}
+
+.side-by-side {
+    display: flex;
+    justify-content: flex-start;
+}
+
+#preview-new-card {
+    flex-grow: 1;
+}
+
+.push {
+    margin-right: 10px;
+}
+
+.print-input {
+    width: 60px;
+}
+
+#condition-input {
+    width: 50px;
+}
+
+h2 {
+    width: calc(100% - 1em);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $palette3;
+    padding: .5em;
+    margin: 0px;
+}
+
+h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $palette3;
+    padding: .5em;
+}
+
+#card-info-section {
+    background-color: $palette5;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    min-width: 300px;
+}
+
+#card-info-inputs {
+    margin-left: 1em;
+}
+
+#flaw-section {
+    background-color: $palette5;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+}
+
+.open {
+    padding-bottom: 1em !important;
+}
+
+.sub-card {
+    margin: 0em 1em 1em 1em;
+    background-color: $palette6;
+}
+
+.delete-flaw {
+    font-size: 12pt !important;
+    line-height: 1.5em !important;
+}
+
+#card-image-uploaders {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+        margin: 1em;
+    }
+}
+
+#card-notes {
+    // display: flex;
+    width: 290px;
+    textarea {
+        flex-grow: 1;
+    }
+}

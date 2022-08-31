@@ -1,0 +1,61 @@
+<!-- Pick List -->
+<div id="title-select">
+    <h2>
+        <div class="center-align">
+            <span id="list-title">
+                {{ whichList.value }}
+            </span>
+            <mat-icon *ngIf="whichList.value !== 'Masterlist'"
+            mat-icon-button
+            [matTooltip]="toolTipText()" matTooltipClass="tooltip">
+                info
+            </mat-icon>
+            <a mat-icon-button *ngIf="whichList.value !== 'Masterlist'"
+            [routerLink]="['binder']"> 
+                <mat-icon>import_contacts</mat-icon>
+            </a>
+            <button mat-icon-button
+            [attr.aria-label]="allowEdit ? 'stop-editing-cards' : 'start-editing-cards'"
+            [disabled]="!isLoggedIn()"
+            (click)="lockSwitch()">
+                <mat-icon>{{ allowEdit ? 'lock_open' : 'lock' }}</mat-icon>
+            </button>
+        </div>
+
+        <div *ngIf="allowEdit && whichList.value !== 'Masterlist'">
+            
+            <button mat-icon-button aria-label="update-checklist-cards" color="prime"
+            (click)="updateChecklist()">
+                <mat-icon>autorenew</mat-icon>
+            </button>
+
+            <a mat-icon-button aria-label="edit-checklist" color="prime"
+            [routerLink]="['../checklist/edit/' + this.whichList.value]">
+                <mat-icon>edit</mat-icon>
+            </a>
+    
+            <button mat-icon-button aria-label="delete-checklist" color="tert"
+            (click)="deleteList()">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+
+    </h2>
+    
+    <!-- Select -->
+    <mat-form-field appearance="fill" id="list-picker" color="prime">
+        <mat-label>Show...</mat-label>
+        <mat-select [formControl]="whichList">
+            <mat-option *ngFor="let list of checklists" [value]="list">
+                {{ list }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+</div>
+
+<app-card-table
+    [displayCards]="activeList"
+    [allowEdit]="allowEdit"
+    [listName]="whichList.value"
+></app-card-table>

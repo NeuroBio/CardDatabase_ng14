@@ -1,0 +1,15 @@
+<!-- Active Card info -->
+<mat-card *ngIf="activeCard" class="sub-card">
+    
+    <b>Card:</b> {{ activeCard.cardTitle }}
+    <span *ngIf="activeCard.dexNumber">({{ activeCard.dexNumber + 1 }})</span>
+    -- {{ activeCard.rarity }}
+    <br>
+    <b>Card Type:</b> {{ activeCard.cardType | titlecase }}
+    <br>
+</mat-card>
+
+<!-- Active card nonexistent -->
+<mat-card *ngIf="activeCard === null" class="sub-card">
+    The card does not exist in the database.
+</mat-card>

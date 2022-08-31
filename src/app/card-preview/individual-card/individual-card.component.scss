@@ -1,0 +1,44 @@
+@import '../../Variables.scss';
+
+.image-holder {
+    display: flex;
+    margin-top: 1em;
+    width: 100%;
+    max-width: calc(100vw - 6em);
+}
+
+img {
+    max-width:100%;
+    max-height:100%;
+    object-fit: cover;
+    display:block;
+}
+
+button {
+    font-size: 6pt;
+}
+
+.edit-button {
+    display: inline-flex;
+    height: 20pt !important;
+    width: 20pt !important;
+    margin: .2em;
+    justify-content: center;
+    align-items: center;
+
+    .mat-icon {
+        font-size: 12pt;
+    }
+}
+
+.card-instance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.side-by-side {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

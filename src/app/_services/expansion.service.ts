@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { CollectionService } from './collection.service';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class ExpansionService {
       gen = {};
     }
     // remove custom card object, convert to standard oject
-    newExpansion.cards = newExpansion.cards.map(card => Object.assign({}, card));
+    newExpansion.cards = newExpansion.cards.map((card: any) => Object.assign({}, card));
     gen.data[newExpansion.name] = newExpansion;
     gen.lastUpdated = +Date.now();
 

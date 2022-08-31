@@ -1,0 +1,61 @@
+<app-go-back></app-go-back>
+
+<div class="main-info-display">
+    <mat-form-field>
+        <mat-label>Expansion</mat-label>
+        <mat-select [formControl]="activeSet">
+            <mat-option *ngFor="let name of expansionNames"
+            [value]="name">
+                {{ name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field><br>
+
+    <b>Set completion:</b> {{ activeSetInfo.unique }} / {{ activeSetInfo.total }}
+    ( {{ getCompletionPercent(activeSetInfo.unique, activeSetInfo.total) }}%) <br>
+
+    <b>Series completion:</b> {{ activeSetInfo.totalPokemon }} / {{ activeSetInfo.ownedPokemon }}
+    ( {{ getCompletionPercent(activeSetInfo.totalPokemon, activeSetInfo.ownedPokemon) }}%)
+    <ul>
+        <b>All Rarities</b>
+        <li *ngFor="let rare of activeSetInfo.rarityTotal | keyvalue" class="tab">
+            {{ rare.key }}:
+            {{ activeSetInfo.rarityOwned[rare.key] ? activeSetInfo.rarityOwned[rare.key] : 0 }}
+            / {{ rare.value }}
+            ( {{ getCompletionPercent(activeSetInfo.rarityOwned[rare.key], rare.value) }}%)
+            <br>
+        </li>
+    </ul>
+    <ul>
+        <b>Series Rarities</b>
+        <li *ngFor="let rare of activeSetInfo.rarityTotalPokemon | keyvalue" class="tab">
+            {{ rare.key }}:
+            {{ activeSetInfo.rarityOwnedPokemon[rare.key] ? activeSetInfo.rarityOwnedPokemon[rare.key] : 0}}
+            / {{ rare.value }}
+            ( {{ getCompletionPercent(activeSetInfo.rarityOwnedPokemon[rare.key], rare.value) }}%)<br>
+        </li>
+    </ul>
+    <b>Total Bulk:</b> {{ activeSetInfo.cardCount }}<br>
+    <b>Copies of Each Print Owned:</b>
+    <div class="card-table">
+        <span class="card-cell"
+        [style.background-color]="card === 0 ? '#bdba9d' : '#c7ba22'"
+        [style.color]="card === 0 ? '#6e6e6e' : 'black'"
+        [matTooltip]="checkCard"
+        matTooltipClass="tooltip"
+        matTooltipPosition="right"
+        (mouseover)="getCardDetails(i)"
+        *ngFor="let card of activeSetInfo.ownership; let i = index">
+            {{ i + 1 }}/{{ activeSetInfo.print }}: x{{ card }}
+            <mat-icon *ngIf="isPokemon(i)">catching_pokemon</mat-icon>
+        </span>
+    </div>
+    <br>
+
+    <div class="max-width">
+        <b>*</b> "Series" refers to all cards in a set that are Pokémon character 
+        cards (not trainers, energy, special pokemon, ect).  These cards are
+        marked in the copies grid with a Pokéball.
+    </div>
+
+</div>

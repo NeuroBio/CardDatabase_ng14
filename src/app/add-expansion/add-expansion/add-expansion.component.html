@@ -1,0 +1,90 @@
+<app-go-back></app-go-back>
+
+<form [formGroup]="expansionForm">
+
+    <mat-card class="tight-card" id="main-card">
+        <!-- header -->
+        <h2>
+            Expansion Info
+        </h2><br>
+
+        <div id="main-input-section">
+            <!-- Name -->
+            <mat-form-field>
+                <mat-label>Expansion Name</mat-label>
+                <input matInput type="text" formControlName="name" cdkFocusInitial>
+            </mat-form-field>
+
+            <!-- Generation -->
+            <mat-form-field>
+                <mat-label>Generation</mat-label>
+                <input matInput type="number" formControlName="generation">
+            </mat-form-field>
+
+            <!-- Release -->
+            <mat-form-field>
+                <mat-label>Release</mat-label>
+                <input matInput type="number" formControlName="release">
+            </mat-form-field>
+            
+            <!-- NumCards -->
+            <mat-form-field>
+                <mat-label>Number of Cards</mat-label>
+                <input matInput type="number" formControlName="numCards">
+            </mat-form-field>
+        </div>
+
+        <!-- Individual cards -->
+        <mat-card id="individual-cards" class="tight-card">
+
+            <!-- Header -->
+            <h2>
+                Cards in Set:
+                <!-- Upload Cards -->
+                <div>
+                    <button mat-raised-button color="primary"
+                    *ngIf="!getCards().value"
+                    (click)="fileInput.click()">
+                        <mat-icon>cloud_upload</mat-icon> Upload Card .csv File
+                    </button>
+    
+                    <button mat-raised-button color="warn"
+                    *ngIf="getCards().value"
+                    (click)="clearCards()">
+                        <mat-icon>clear</mat-icon> Clear Cards
+                    </button>
+                    
+                    <!-- Actual uploader -->
+                    <input #fileInput type="file" (change)="onFileInput($event)"
+                            style="display:none;" id="file">
+                </div>
+            </h2>
+
+            <!-- View Cards -->
+            <app-expansion-viewer *ngIf="getCards().value[0]"
+            [cards]="getCards().value"
+            ></app-expansion-viewer>
+        </mat-card>
+
+        <span id="expected-form">
+            <b>Expected Form:</b><br>
+            Required: Name, Type, Rarity<br>
+            Optional: Special Print (standard print number is inferred by order)
+        </span>
+
+    </mat-card>
+
+    <div class="button-box">
+        <button mat-raised-button color="prime"
+        [disabled]="!expansionForm.valid || isLoading"
+        (click)="submit()">
+            <mat-icon>cloud_upload</mat-icon>
+            Add Expansion to Database
+        </button>
+    </div>
+
+</form>
+
+<div class="progress-spinner" *ngIf="isLoading">
+    <mat-spinner [diameter]="200"></mat-spinner>
+</div>

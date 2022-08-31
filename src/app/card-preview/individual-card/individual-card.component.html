@@ -1,0 +1,64 @@
+ <div class="card-instance">
+     <div *ngIf="instance">
+
+        <h2 *ngIf="creating">
+            Card Preview:
+        </h2>
+
+        <!-- images of the card -->
+        <div class="image-holder">
+            <div *ngIf="instance.front">
+                <img [src]="instance.front">
+            </div>
+            <div *ngIf="instance.back">
+                <img [src]="instance.back">
+            </div>
+        </div>
+
+
+        <div class="side-by-side">
+            <!-- Text display -->
+            <div>
+                <!-- Card type and state -->
+                <span *ngIf="showAll && exp && cardType">
+                    {{ exp.name }} {{ cardType.cardTitle }} ({{ instance.printNumber }}/{{ exp.numCards }})
+                </span>
+                {{ instance.form }} {{ instance.condition }}
+                <br>
+
+                <!-- Start Flaws -->
+                Flaws:
+                <!-- List Flaws -->
+                <div class="tab" *ngFor="let flaw of instance.flaws">
+                    <span></span>
+                    - {{ flaw.severity }} {{ flaw.type }} {{ flaw.where }}  {{ flaw.landmark }}
+                </div>
+
+                <!-- No Flaws -->
+                <div *ngIf="!instance.flaws || instance.flaws.length === 0" class="tab">
+                    - None
+                </div>
+
+                Notes:
+                <div *ngIf="instance.notes">
+                    {{ instance.notes }}
+                </div>
+
+                <div *ngIf="!instance.notes" class="tab">
+                    - None
+                </div>
+
+            </div>
+
+             <!-- Edit button -->
+            <a mat-icon-button color="prime" *ngIf="allowEdit"
+            class="edit-button" [routerLink]="[makeRoute()]">
+                <mat-icon>edit</mat-icon>
+            </a>
+
+        </div>
+
+    </div>
+
+
+ </div>

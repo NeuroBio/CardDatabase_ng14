@@ -1,0 +1,147 @@
+@import '../../Variables.scss';
+
+#table-holder {
+    background-color: $palette6;
+    max-width: calc(#{$max-width} - 2.2em);
+}
+
+// filter CSS
+#filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+#filter-header {
+    margin-right: 1em;
+    font-size: 14pt;
+}
+
+.filter {
+    width: 70px;
+    margin-right: 1em;
+}
+
+.filter-long {
+    width: 150px;
+    margin-right: 1em;
+}
+
+mat-label {
+    font-weight: bold;
+}
+
+// table CSS
+table {
+    width: 100%;
+}
+
+.mat-header-cell {
+    height: 100%;
+    padding-left: .1em;
+    font-size: 12pt;
+}
+
+.mat-cell {
+    height: 100%;
+    padding-left: .1em;
+}
+
+.mat-column-DropDown {
+    width: 50px;
+}
+
+.mat-column-Dex {
+    width: 40px;
+}
+
+.mat-column-Gen {
+    width: 40px;
+}
+
+.mat-column-Release {
+    width: 40px;
+}
+
+.mat-column-Print {
+    width: 75px;
+}
+
+.mat-column-Have {
+    width: 75px;
+}
+
+.drop-button {
+    display: flex;
+    height: 20pt !important;
+    width: 20pt !important;
+    margin: .2em;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-row {
+    background-color: $palette3;
+}
+
+.main-rows {
+    background-color: $palette2;
+}
+
+.main-rows-none {
+    .mat-cell {
+        color: $disabled-text;
+    }
+    background-color: $disabled-background;
+}
+
+.main-rows-placeholder {
+    background-color: $placeholder-background !important;
+}
+
+.main-rows-placeholder {
+    background-color: $palette2;
+}
+
+.drop-down {
+    background-color: $palette6;
+    height: 0px;
+    overflow: hidden;
+}
+
+.origin {
+    margin-top: 2px;
+    font-size: 14pt;
+    transition: all .2s ease-out !important;
+}
+
+.rotate {
+    margin-top: 2px;
+    font-size: 14pt;
+    transform: rotate(90deg);
+    transition: all .2s ease-out !important;
+}
+
+.expanded {
+    height: 0px;
+    overflow: hidden;
+}
+
+.swap-cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drop-icon {
+    font-size: 12pt;
+}
+
+.card-instance {
+    border-bottom: 1px solid $borders-grey;
+}
+
+.table-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

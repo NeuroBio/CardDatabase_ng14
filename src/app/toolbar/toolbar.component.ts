@@ -14,7 +14,7 @@ import { CollectionService } from '../_services/collection.service';
 export class ToolbarComponent implements OnInit{
 
   population: Population = new Population();
-  populationSubscription?: Subscription = new Subscription;
+  populationSubscription?: Subscription;
 
   constructor(
     private collectionserv: CollectionService,
@@ -46,7 +46,6 @@ export class ToolbarComponent implements OnInit{
 
   isLoggedIn(): boolean {
     return this.auth.isLoggedIn;
-    return false;
   }
 
   getActiveList(): string {

@@ -1,0 +1,41 @@
+@import '../../Variables.scss';
+
+form {
+    position: relative;
+    max-width: 650px;
+    background-color: $palette2;
+    padding: 1em;
+}
+
+h2 {
+    width: calc(100% - 1em);
+    background: $palette3;
+    padding: .5em;
+    margin: 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#main-card {
+    background-color: $palette5;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+}
+
+#main-input-section {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    margin-left: 1em;
+}
+
+#individual-cards {
+    background-color: $palette6;
+    margin: 0em 0em 1em 1em;
+    width: calc(100% - 2em);
+}
+
+#expected-form {
+    margin: 0em 1em 1em 1em;
+}

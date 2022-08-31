@@ -5,10 +5,10 @@ import { Injectable } from '@angular/core';
 })
 export class ResizeService {
 
-  resizeandPreviewImage(event: any, maxHeight: number, maxWidth: number)
+  async resizeandPreviewImage(event: any, maxHeight: number, maxWidth: number)
     : Promise<{ urlString: string, imageBlob: Blob }> {
       return this.resizer(event.target.files[0], maxHeight, maxWidth)
-      .then((urlString: string) => {
+      .then((urlString: any) => {
         const imageBlob = this.b64toBlob(urlString);
         return { urlString, imageBlob };
       });
@@ -29,6 +29,9 @@ export class ResizeService {
     return new Promise((resolve) => {
       const canvas = document.createElement('canvas');
       const ctx1 = canvas.getContext('2d');
+      if (!ctx1) {
+        return;
+      }
 
       const img = document.createElement('img');
       let URLi;
@@ -53,6 +56,9 @@ export class ResizeService {
           const ratioHHalf = Math.ceil(ratioH / 2);
 
           const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            return;
+          }
           const imgold = ctx.getImageData(0, 0, widthSource, heightSource);
           const img2 = ctx.createImageData(width, height);
           const data = imgold.data;
@@ -125,7 +131,7 @@ export class ResizeService {
 
 
 
-  b64toBlob(dataURI): Blob {
+  b64toBlob(dataURI: any): Blob {
     const byteString = atob(dataURI.split(',')[1]);
     const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
