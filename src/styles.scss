@@ -1,1 +1,85 @@
-/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import './app/Variables.scss';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@font-face {
+    font-family: "Pokemon";
+    src: local("Pokemon"), url(./assets/fonts/PokemonSolid.ttf) format("truetype");
+}
+
+.tab {
+    margin-left: 1.5em;
+}
+
+.add-margin {
+    margin-left: 1em;
+}
+
+.tight-card {
+    padding: 0px !important;
+}
+
+.breathing-room {
+    padding: 0em 1em;
+}
+
+.center-align {
+    display: flex;
+    align-items: center;
+}
+
+.separate-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.grow {
+    flex-grow: 1;
+}
+
+.mat-prime {
+    background-color: $palette1;
+    color: $palette6;
+}
+
+.mat-second {
+    background-color: $palette2;
+    color: black;
+}
+
+.mat-tert {
+    background-color: red;
+    color: white;
+}
+
+.mat-dialog-container {
+    padding: 0px !important;
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+.button-box {
+    display: flex;
+    flex-flow: row-reverse;
+    justify-content: space-between;
+    padding: 1em 0em;
+}
+
+.progress-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,.1);
+    border-radius: 2em;
+
+    mat-spinner {
+        margin: 2em;
+    }
+}
+
+.mat-progress-spinner circle, .mat-spinner circle {
+    stroke: $palette1;
+}

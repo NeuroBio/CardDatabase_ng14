@@ -52,3 +52,7 @@ hosting.*
 
 *.pyc
 src/api_caller/expansions/*.csv
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json

@@ -1,0 +1,44 @@
+@import '../Variables.scss';
+
+header {
+
+    background-color: $palette7;
+}
+
+h1 {
+    display: flex;
+    justify-content: space-between;
+    a {
+        font-family: "pokemon";
+        color: $pokemon-yellow;
+        font-size: 25pt;
+        -webkit-text-stroke: 2.2px $pokemon-blue;
+        letter-spacing: 0.15em;
+        padding: .1em 0em .3em .3em;
+        white-space: pre-wrap; /* CSS3 */
+        white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+        white-space: -pre-wrap; /* Opera 4-6 */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        word-wrap: break-word; /* Internet Explorer 5.5+ */
+    }
+}
+
+#population-info {
+    font-size: 11pt;
+    width: 150px;
+    margin: 1em;
+}
+
+
+#main-site-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+#google-logo {
+    margin: 0em 1em 0em 0em;
+}
+
+.main-actions {
+    margin: 0em .5em .5em .5em;
+}

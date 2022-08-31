@@ -1,0 +1,50 @@
+<header>
+    <h1>
+        <a mat-button [routerLink]="[getActiveList()]" disableRipple>
+            My Pok&eacute;mon Card Collection
+        </a>
+
+        <div>
+            <mat-form-field id="population-info">
+                <mat-label>Database Population</mat-label>
+                <mat-select value="default">
+                    <mat-option value="default">All Cards: {{ population.total() }}</mat-option>
+                    <mat-option value="pokemon">Pok&eacute;mon: {{ population['Pokémon'] }}</mat-option>
+                    <mat-option value="trainer">Trainers: {{ population.Trainer }}</mat-option>
+                    <mat-option value="tcgo">TCGO: {{ population.TCGO }}</mat-option>
+                    <mat-option value="energy">Energy: {{ population.allEnergy() }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </h1>
+
+
+    <!-- Main sight actions -->
+    <div id="main-site-actions">
+        <div>
+            <a mat-raised-button color="second" class="main-actions"
+            routerLink="card/add">
+                Add Card
+            </a>
+            <a mat-raised-button color="second" class="main-actions"
+            routerLink="expansion/view">
+                View Expansions
+            </a>
+            <a mat-raised-button color="second" class="main-actions"
+            routerLink="checklist/add">
+                Create List
+            </a>
+
+            <a mat-raised-button color="second" class="main-actions"
+            routerLink="set-completion">
+                Set Completion
+            </a>
+        </div>
+
+        <button mat-raised-button color="second" class="main-actions"
+        (click)="changelogin()">
+        <mat-icon id="google-logo" svgIcon="google-logo" *ngIf="!isLoggedIn()"></mat-icon>
+            {{ isLoggedIn()  ? 'Log Out' : 'Login With Google' }}
+        </button>
+    </div>
+</header>

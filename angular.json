@@ -103,6 +103,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "CardDataBase:build:production",
+            "firebaseProject": "carddatabase-6dfef",
+            "firebaseHostingSite": "carddatabase-6dfef"
+          }
         }
       }
     }
