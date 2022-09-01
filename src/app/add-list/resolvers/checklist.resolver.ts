@@ -21,8 +21,11 @@ export class ChecklistResolver implements Resolve<Checklist> {
     private messenger: MessengerService
     ) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Checklist> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     const listname = route.paramMap.get('ChecklistID');
+    if (!listname) {
+      return of (null);
+    }
     const list = this.collectionserv.getRawCheckList(listname);
     if (list) {
       return of (list);

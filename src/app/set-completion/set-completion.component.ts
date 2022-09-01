@@ -4,45 +4,81 @@ import { Subscription } from 'rxjs';
 import { SetExpansion } from '../_objects/expansion';
 import { CollectionService } from '../_services/collection.service';
 
+export class SetInfo {
+  expName: string;
+  rarityOwned: { [key: string]: any };
+  rarityOwnedPokemon:  { [key: string]: any };
+  rarityTotal:  { [key: string]: any };
+  rarityTotalPokemon:  { [key: string]: any }
+  cardCount: number;
+  unique: number;
+  ownership: number[];
+  print: number;
+  total: number;
+  totalPokemon: number;
+  ownedPokemon: number;
+
+  constructor(expName: string, rarityOwned: { [key: string]: any }, rarityOwnedPokemon: { [key: string]: any },
+    rarityTotal: { [key: string]: any }, rarityTotalPokemon: { [key: string]: any },
+    cardCount: number, unique: number, ownership: number[], print: number, total: number, totalPokemon: number, ownedPokemon: number) {
+      this.expName = expName;
+      this.rarityOwned = rarityOwned;
+      this.rarityOwnedPokemon = rarityOwnedPokemon;
+      this.rarityTotal = rarityTotal;
+      this.rarityTotalPokemon = rarityTotalPokemon;
+      this.cardCount = cardCount;
+      this.unique = unique;
+      this.ownership = ownership;
+      this.print = print;
+      this.total = total;
+      this.totalPokemon = totalPokemon;
+      this.ownedPokemon = ownedPokemon;
+    }
+};
+
 @Component({
   selector: 'app-set-completion',
   templateUrl: './set-completion.component.html',
   styleUrls: ['./set-completion.component.scss']
 })
+
 export class SetCompletionComponent implements OnInit {
 
   expansions: SetExpansion[];
-  expansionNames: string[];
+  expansionNames: string[ ];
   cards: any;
-  checkCard: string;
-  setInfo = {};
-  activeSetInfo: any;
+  checkCard?: string;
+  setInfo: { [key: string]: any } = { };
+  activeSetInfo: SetInfo;
   activeSet: FormControl;
   setSubscription: Subscription;
 
   constructor(
     private collectionserv: CollectionService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) {
+      this.activeSet = this.fb.control('Base Set');
+      this.setSubscription = this.activeSet.valueChanges
+        .subscribe(name => this.getSetInfo(name));
+      this.expansions = this.collectionserv.expansions.value;
+      this.expansionNames = this.collectionserv.getExpansionNames();
+      this.cards = this.collectionserv.allCards.value;
+      this.getSetInfo('Base Set');
+      this.activeSetInfo = this.setInfo['Base Set'];
+    }
 
   ngOnInit(): void {
-    this.activeSet = this.fb.control('Base Set');
-    this.setSubscription = this.activeSet.valueChanges
-      .subscribe(name => this.getSetInfo(name));
-    this.expansions = this.collectionserv.expansions.value;
-    this.expansionNames = this.collectionserv.getExpansionNames();
-    this.cards = this.collectionserv.allCards.value;
-    this.getSetInfo('Base Set');
+
   }
 
-  getSetInfo(expName: string): void {
+  getSetInfo(expName: any): void {
     // create set data if it does not exist
     if (!this.setInfo[expName]) {
       const exp = this.expansions[expName];
-      const rarityOwned = {};
-      const rarityOwnedPokemon = {};
-      const rarityTotal = {};
-      const rarityTotalPokemon = {};
-      const ownership = [];
+      const rarityOwned: { [key: string]: any } = {};
+      const rarityOwnedPokemon: { [key: string]: any } = {};
+      const rarityTotal: { [key: string]: any } = { };
+      const rarityTotalPokemon: { [key: string]: any } = {};
+      const ownership: number[] = [];
       let cardCount = 0;
       let unique = 0;
       let uniquePokemon = 0;

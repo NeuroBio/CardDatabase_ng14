@@ -10,14 +10,14 @@ const routes: Routes = [
     loadChildren: () => import('./add-card/add-card.module')
       .then(m => m.AddCardModule)
   },
-  // { path: 'checklist',
-  //   loadChildren: () => import('./add-list/add-list.module')
-  //     .then(m => m.AddListModule)
-  // },
-  // { path: 'set-completion',
-  //   loadChildren: () => import('./set-completion/set-completion.module')
-  //     .then(m => m.SetCompletionModule)
-  // },
+  { path: 'checklist',
+    loadChildren: () => import('./add-list/add-list.module')
+      .then(m => m.AddListModule)
+  },
+  { path: 'set-completion',
+    loadChildren: () => import('./set-completion/set-completion.module')
+      .then(m => m.SetCompletionModule)
+  },
   // { path: '',
   // loadChildren: () => import('./display-lists/display-lists.module')
   // .then(m => m.DisplayListsModule)

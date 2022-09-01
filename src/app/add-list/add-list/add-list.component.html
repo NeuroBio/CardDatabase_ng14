@@ -35,7 +35,7 @@
                         <mat-form-field id="small-print-input">
                             <mat-label>Print</mat-label>
                             <input matInput formControlName="print" type="number"
-                            min="1" max="{{ expansions[cardForm.get('expansion').value].cards.length }}">
+                            min="1" max="{{ expansions[getCardFormValue('expansion').value].cards.length }}">
                         </mat-form-field>
                     </div>
 
@@ -127,7 +127,7 @@
                                         <!-- Pick method to prepopulate list -->
                                         <mat-form-field *ngIf="!drag" id="population-method">
                                             <mat-label>Population Method</mat-label>
-                                            <mat-select [disabled]="!cardForm.get('prepopulate').value" #defaultChoice>
+                                            <mat-select [disabled]="!getCardFormValue('prepopulate').value" #defaultChoice>
                                                 <mat-option value="best" (click)="populateOption('best', i)">
                                                     Find Best Card
                                                 </mat-option>
@@ -144,7 +144,7 @@
                                     <!-- Chosen card if a card is chosen -->
                                     <div *ngIf="populateMethods[i].method === 'useCard' && !drag">
                                         <button mat-button color="prime"
-                                        (click)="expanded === i ? expanded = undefined : expanded = i">
+                                        (click)="expanded === i ? expanded = -1 : expanded = i">
                                             <mat-icon>{{ expanded === i ? 'visibility_off' : 'visibility' }}</mat-icon>
                                             {{ expanded === i ? 'Hide Card' : 'View Card' }}
                                         </button>

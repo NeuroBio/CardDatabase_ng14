@@ -28,14 +28,14 @@ export class CheckInfo {
 
 export class PopulateMethod {
     method: string;
-    key?: string;
-    uid?: string;
+    key: string = '';
+    uid: string = '';
 
     constructor(method: string, exp?: string, print?: string, uid?: string) {
         this.method = method;
         if (method === 'useCard') {
             this.key = `${exp}-${print}`;
-            this.uid = uid;
+            this.uid = uid || '';
         }
     }
 }

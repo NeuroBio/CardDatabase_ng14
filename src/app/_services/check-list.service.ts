@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { CheckInfo } from '../_objects/checklist';
 import { CollectionService } from './collection.service';
 
@@ -13,7 +13,7 @@ export class CheckListService {
     private collectionserv: CollectionService
     ) { }
 
-  uploadList(list: any, oldListName?: string): Promise<boolean> {
+  async uploadList(list: any, oldListName?: string): Promise<boolean> {
     list.checkInfo = JSON.stringify(list.checkInfo);
     list.lastUpdated = +Date.now();
     return this.af.collection<any>('check-lists')
@@ -31,11 +31,15 @@ export class CheckListService {
       } else { // if list name changed, set old list for destruction
         return this.deleteList(oldListName);
       }
+      return;
     }));
   }
 
-  deleteList(listName: any): Promise<boolean> {
+  async deleteList(listName: any): Promise<boolean> {
     const list = this.collectionserv.getRawCheckList(listName);
+    if (!list) {
+      return Promise.reject(false);
+    }
     list.lastUpdated = +Date.now();
     list.deleted = +Date.now();
     return this.af.collection<any>('check-lists')
@@ -47,7 +51,7 @@ export class CheckListService {
     });
   }
 
-  changeCard(newCheckInfo: CheckInfo, listName: string, index: number): Promise<boolean> {
+  async changeCard(newCheckInfo: CheckInfo, listName: string, index: number): Promise<boolean> {
     const list: any = this.collectionserv.getRawCheckList(listName);
     if (newCheckInfo) {
       list.checkInfo[index] = newCheckInfo;
@@ -67,6 +71,9 @@ export class CheckListService {
 
   updateList(listName: string): Promise<boolean> {
     const list = this.collectionserv.getRawCheckList(listName);
+    if (!list) {
+      return Promise.reject(false);
+    }
     list.checkInfo = list.checkInfo.map((info, i) => {
       if (!info) {
         const key = list.cardKeys[i];

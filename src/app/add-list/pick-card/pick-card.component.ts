@@ -21,7 +21,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
   expansionNames: string[];
   expansions: any;
   masterList: CardChunk[];
-  allowed: CardChunk[];
+  allowed: CardChunk[] = [];
   edit = false;
 
   cardSubscription: Subscription;
@@ -35,9 +35,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
     private messenger: MessengerService,
     private dialogRef: MatDialogRef<PickCardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
-
-  ngOnInit(): void {
+  ) {
     this.expansionNames = this.collectionserv.getExpansionNames();
     this.masterList = this.collectionserv.getMaster();
     this.expansions = this.collectionserv.expansions.value;
@@ -45,7 +43,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
     this.getAllowed('Base Set');
 
     // load in past data
-    const chunk: CardInstance[] = this.collectionserv.getChunk(this.data.key);
+    const chunk = this.collectionserv.getChunk(this.data.key);
     if (chunk) {
       this.edit = true;
       const keyParts = this.data.key.split(/-(?!.*-)/);
@@ -58,24 +56,27 @@ export class PickCardComponent implements OnInit, OnDestroy {
           : this.collectionserv.getBestCard(chunk)
       });
       this.getAllowed(keyParts[0]);
-    }
-
-    this.expSubscription = this.cardForm.controls.exp.valueChanges
+  }
+    this.expSubscription = this.cardForm.controls['exp'].valueChanges
       .subscribe(exp => {
         this.getAllowed(exp);
         this.cardForm.patchValue({ activeCardChunkKey: `${exp}-${this.allowed[0].printNumber}` });
     });
 
-    this.chunkSubscription = this.cardForm.controls.activeCardChunkKey.valueChanges
+    this.chunkSubscription = this.cardForm.controls['activeCardChunkKey'].valueChanges
       .subscribe(key => {
         this.cardForm.patchValue({ activeCardChunk: this.collectionserv.getChunk(key) });
     });
 
-    this.cardSubscription = this.cardForm.controls.activeCardChunk.valueChanges
+    this.cardSubscription = this.cardForm.controls['activeCardChunk'].valueChanges
       .subscribe(cardChunk => {
         this.cardForm.patchValue({ activeCard: this.collectionserv.getBestCard(cardChunk) });
     });
+    
   }
+
+  ngOnInit(): void { }
+
 
   ngOnDestroy(): void {
     this.cardSubscription.unsubscribe();
@@ -93,7 +94,8 @@ export class PickCardComponent implements OnInit, OnDestroy {
   }
 
   getValue(control: string): any {
-    return this.cardForm.get(control).value;
+    const formControl = this.cardForm.get(control);
+    return formControl ? formControl.value : '';
   }
 
   private getAllowed(exp: string): void {
@@ -119,8 +121,8 @@ export class PickCardComponent implements OnInit, OnDestroy {
   }
 
   // list entry submission
-  upload(del: boolean = false): Promise<void> {
-    let newCheckInfo: CheckInfo;
+  async upload(del: boolean = false): Promise<void> {
+    let newCheckInfo: any;
     if (!del) {
       const activeCard = this.cardForm.value.activeCard;
       const key = `${activeCard.expansionName}-${activeCard.printNumber}`;

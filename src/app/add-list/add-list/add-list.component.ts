@@ -21,7 +21,7 @@ import { PickCardComponent } from '../pick-card/pick-card.component';
 })
 export class AddListComponent implements OnInit, OnDestroy {
 
-  @ViewChildren(MatSelect) select: QueryList<MatSelect>;
+  @ViewChildren(MatSelect) select?: QueryList<MatSelect>;
 
   editData: any;
   listForm: FormGroup;
@@ -29,15 +29,15 @@ export class AddListComponent implements OnInit, OnDestroy {
   cards: any[] = [];
   drag = true;
 
-  populateMethods = [];
-  previews = [];
-  expanded: number;
+  populateMethods: any[] = [];
+  previews: any[] = [];
+  expanded: number = -1;
 
   activeCard: Card;
   expansionSubscription: Subscription;
   printSubscription: Subscription;
 
-  expansions: {};
+  expansions: { [key: string]: any };
   expansionNames: string[];
 
   isLoading = false;
@@ -50,11 +50,9 @@ export class AddListComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog
-  ) { }
-
-  ngOnInit(): void {
+  ) {
     this.route.data.subscribe(data => {
-      this.editData = data.checklist;
+      this.editData = data['checklist'];
     });
     this.expansions = this.collectionserv.expansions.value;
     this.expansionNames = this.collectionserv.getExpansionNames();
@@ -62,21 +60,25 @@ export class AddListComponent implements OnInit, OnDestroy {
     this.cardForm = this.createCardForm();
     this.activeCard = this.collectionserv.getActiveCard('Base Set', 1);
 
-    this.expansionSubscription = this.cardForm.controls.expansion.valueChanges
+    this.expansionSubscription = this.cardForm.controls['expansion'].valueChanges
       .subscribe(exp => {
-        const print = this.cardForm.controls.print.value;
+        const print = this.cardForm.controls['print'].value;
         this.activeCard = this.collectionserv.getActiveCard(exp, print);
     });
 
-    this.printSubscription = this.cardForm.controls.print.valueChanges
+    this.printSubscription = this.cardForm.controls['print'].valueChanges
       .subscribe(print => {
-        const exp = this.cardForm.controls.expansion.value;
+        const exp = this.cardForm.controls['expansion'].value;
         this.activeCard = this.collectionserv.getActiveCard(exp, print);
     });
 
     if (this.editData) {
       this.loadOldData();
     }
+  }
+
+  ngOnInit(): void {
+    
   }
 
   ngOnDestroy(): void {
@@ -118,7 +120,7 @@ export class AddListComponent implements OnInit, OnDestroy {
       path: `${cardinfo.expansion}-${cardinfo.print}`,
     });
     this.populateMethods.push({});
-    this.cardForm.patchValue({ print: this.cardForm.get('print').value + 1 });
+    this.cardForm.patchValue({ print: this.cardForm.controls['print'].value + 1 });
     this.previews.push(undefined);
   }
 
@@ -157,9 +159,17 @@ export class AddListComponent implements OnInit, OnDestroy {
 
     if (!this.drag) {
       setTimeout(() => {
-        this.select.forEach((x, i) => x.options.find(op =>
-          op.value === this.getMethodValue(i)).select()); }, 10);
-    }
+        if (!this.select) {
+          return;
+        }
+        this.select.forEach((x, i) => {
+          const found = x.options.find(op => op.value === this.getMethodValue(i))
+            if (found) {
+              found.select();
+            }
+          });
+      }, 10)
+    };
   }
 
   getMethodValue(index: number): string {
@@ -178,7 +188,7 @@ export class AddListComponent implements OnInit, OnDestroy {
       );
 
     // prepopulation with card instances
-    if (this.cardForm.get('prepopulate').value) {
+    if (this.cardForm.controls['prepopulate'].value) {
       this.populateMethods.forEach((method, i) => {
         // skip is ignored.
         if (!method.method || method.method === 'best') { // default or manually set to best
@@ -211,15 +221,15 @@ export class AddListComponent implements OnInit, OnDestroy {
 
   loadOldData(): void {
     this.listForm.patchValue({ name: this.editData.name, startOn: this.editData.startOn });
-    this.cards = this.editData.cardKeys.map(key => {
+    this.cards = this.editData.cardKeys.map((key: string) => {
       const keyParts = key.split(/-(?!.*-)/);
       return {
-      preview: this.collectionserv.getActiveCard(keyParts[0], keyParts[1]),
+      preview: this.collectionserv.getActiveCard(keyParts[0], +keyParts[1]),
       exp: this.expansions[keyParts[0]],
       path: key,
       };
     });
-    this.populateMethods = this.editData.checkInfo.map(info => {
+    this.populateMethods = this.editData.checkInfo.map((info: PopulateMethod) => {
       if (info.uid) {
         const keyParts = info.key.split(/-(?!.*-)/);
         return new PopulateMethod('useCard', keyParts[0], keyParts[1], info.uid);
@@ -230,6 +240,10 @@ export class AddListComponent implements OnInit, OnDestroy {
     this.populateMethods.forEach((info, i) => {
       this.previews[i] = info.key ? this.getCard(info) : undefined;
     });
+  }
+
+  getCardFormValue (property: string): any {
+    return this.cardForm.get(property);
   }
 
 }
