@@ -9,7 +9,7 @@ import { CheckInfo } from '../_objects/checklist';
 })
 export class FilterService {
 
-  sortingData = {
+  sortingData: { [key: string]: any } = {
     Dex: 'asc',
     Name: '',
     Expansion: '',
@@ -19,9 +19,9 @@ export class FilterService {
     Copies: '',
   };
 
-  filterObject  = {
+  filterObject: { [key: string]: any } = {
     dex: '', title: '', expansion: '', gen: '',
-    release: '', print: '', copies: null, haveCard: ''
+    release: '', print: '', copies: '', haveCard: ''
   };
   filterForm: FormGroup;
 
@@ -31,7 +31,7 @@ export class FilterService {
   }
 
   redoSort(cards: CardChunk[]) {
-    Object.keys(this.sortingData).forEach(active => {
+    Object.keys(this.sortingData).forEach((active: string)=> {
       if (this.sortingData[active]) {
         cards = this.sort(cards, { active, direction: this.sortingData[active] } as Sort);
       }
@@ -57,7 +57,11 @@ export class FilterService {
         case 'Release': return this.compare(a.release, b.release, isAsc);
         case 'Print': return this.compare(a.printNumber, b.printNumber, isAsc);
         case 'Copies': return this.compare(a.owned.length, b.owned.length, isAsc);
-        case 'Have': return this.compareHave(a.checkInfo, b.checkInfo, isAsc);
+        case 'Have': 
+          if (a.checkInfo && b.checkInfo) {
+            return this.compareHave(a.checkInfo, b.checkInfo, isAsc);
+          }
+          return 0;
         default: return 0;
       }
     });

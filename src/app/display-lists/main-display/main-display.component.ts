@@ -20,7 +20,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   cardSubscription: Subscription;
 
-  checklists: string[];
+  checklists: string[] = [];
   activeList: CardChunk[] = [];
 
   whichList: FormControl;
@@ -39,38 +39,39 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute
-    ) { }
+    ) {
 
-  ngOnInit(): void {
-    // control active list and list info
-    this.whichList = this.fb.control('')
-    this.route.data.subscribe(data => {
-      this.whichList.patchValue(data.checklist);
-      this.getList();
-    });
-    this.allowEdit = this.collectionserv.allowEdit;
-    this.getchecklistNames();
-    this.owned = this.getOwned();
+ // control active list and list info
+ this.whichList = this.fb.control('')
+ this.route.data.subscribe(data => {
+   this.whichList.patchValue(data['checklist']);
+   this.getList();
+ });
+ this.allowEdit = this.collectionserv.allowEdit;
+ this.getchecklistNames();
+ this.owned = this.getOwned();
 
-    // card contents updated
-    this.cardSubscription = this.collectionserv.allCards
-      .pipe(skip(1)).subscribe(() => this.getList() );
+ // card contents updated
+ this.cardSubscription = this.collectionserv.allCards
+   .pipe(skip(1)).subscribe(() => this.getList() );
 
-    // List contents updated
-    this.listSubscription = this.collectionserv.checkLists
-      .pipe(skip(1)).subscribe(lists => {
-        this.checklists = lists.map(list => list.name);
-        this.checklists.splice(0, 0, this.collectionserv.activeList);
-        this.getList();
-    });
+ // List contents updated
+ this.listSubscription = this.collectionserv.checkLists
+   .pipe(skip(1)).subscribe(lists => {
+     this.checklists = lists.map(list => list.name);
+     this.checklists.splice(0, 0, this.collectionserv.activeList);
+     this.getList();
+ });
 
-    // Change list
-    this.activeListSubscription = this.whichList.valueChanges
-      .subscribe(which => {
-        this.collectionserv.activeList = which;
-        this.router.navigate([which]);
-      });
-  }
+ // Change list
+ this.activeListSubscription = this.whichList.valueChanges
+   .subscribe(which => {
+     this.collectionserv.activeList = which;
+     this.router.navigate([which]);
+   });
+    }
+
+  ngOnInit(): void { }
 
   ngOnDestroy(): void {
     this.cardSubscription.unsubscribe();
@@ -87,7 +88,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     if (this.whichList.value === 'Masterlist') {
       this.activeList = this.collectionserv.getMaster();
     } else {
-      this.activeList = this.collectionserv.getCheckList(this.whichList.value);
+      this.activeList = this.collectionserv.getCheckList(this.whichList.value) || [];
       this.owned = this.getOwned();
     }
   }
@@ -109,6 +110,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
           }
         });
       }
+      return;
     });
   }
 

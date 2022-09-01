@@ -19,8 +19,11 @@ export class ListResolver implements Resolve<string> {
     private messenger: MessengerService
   ) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     const listname = route.paramMap.get('ChecklistID');
+    if (!listname) {
+      return of (null);
+    }
     let list: boolean;
 
     if (listname === 'Masterlist') {
@@ -32,7 +35,7 @@ export class ListResolver implements Resolve<string> {
       } else {
         this.router.navigate(['Masterlist']);
         this.messenger.send(`List ${listname} was not found.`);
-        return of (null);  
+        return of (null);
       }
     }
   }

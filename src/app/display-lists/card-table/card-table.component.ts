@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { PickCardComponent } from 'src/app/add-list/pick-card/pick-card.component';
 import { CardChunk } from 'src/app/_objects/card-chunk';
 import { CardInstance } from 'src/app/_objects/card-instance';
+import { SetExpansion } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
 import { FilterService } from 'src/app/_services/filter.service';
 
@@ -35,7 +36,7 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     'Release', 'Print'
   ];
 
-  expanded: CardChunk;
+  expanded: CardChunk = new CardChunk(0, new SetExpansion('', [], 0, 0, 0));
   loading = true;
   filterSubscription: Subscription;
 
@@ -45,14 +46,13 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private dialog: MatDialog,
     public filterserv: FilterService
-    ) { }
+    ) {
+      this.filterSubscription = this.filterserv.filterForm.valueChanges
+        .subscribe(value => this.cards.filter = JSON.stringify(value));
+      this.cards.filterPredicate = this.filterserv.customFilterPredicate(this.listName);
+    }
 
-  ngOnInit(): void {
-    
-    this.filterSubscription = this.filterserv.filterForm.valueChanges
-      .subscribe(value => this.cards.filter = JSON.stringify(value));
-    this.cards.filterPredicate = this.filterserv.customFilterPredicate(this.listName);
-  }
+  ngOnInit(): void { }
 
   ngOnChanges(): void {
     this.loading = true;

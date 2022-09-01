@@ -18,10 +18,10 @@ const routes: Routes = [
     loadChildren: () => import('./set-completion/set-completion.module')
       .then(m => m.SetCompletionModule)
   },
-  // { path: '',
-  // loadChildren: () => import('./display-lists/display-lists.module')
-  // .then(m => m.DisplayListsModule)
-  // },
+  { path: '',
+  loadChildren: () => import('./display-lists/display-lists.module')
+  .then(m => m.DisplayListsModule)
+  },
   // { path: '**', redirectTo: '' }
 ];
 
