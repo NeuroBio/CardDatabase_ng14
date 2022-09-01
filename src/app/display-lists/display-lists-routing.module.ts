@@ -5,7 +5,7 @@ import { MainDisplayComponent } from './main-display/main-display.component';
 import { ListResolver } from './resolvers/list.resolver';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'Masterlist' },
+  { path: '', redirectTo: 'Masterlist', pathMatch: 'full'},
   { path: ':ChecklistID',
     resolve: { checklist: ListResolver },
     children: [

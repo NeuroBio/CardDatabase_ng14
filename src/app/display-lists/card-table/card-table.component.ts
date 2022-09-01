@@ -36,7 +36,7 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     'Release', 'Print'
   ];
 
-  expanded: CardChunk = new CardChunk(0, new SetExpansion('', [], 0, 0, 0));
+  expanded?: CardChunk;
   loading = true;
   filterSubscription: Subscription;
 
