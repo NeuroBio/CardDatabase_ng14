@@ -44,6 +44,7 @@ export class CollectionService {
   }
 
   load(): Promise<boolean> {
+    console.log('checked...', this.lastChecked)
     return new Promise((resolve) => {
       forkJoin([
         this.getCards().pipe(take(1)),

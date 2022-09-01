@@ -27,10 +27,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // factories
 import { AuthService } from './_services/auth.service';
-
 export function AuthFactory(provider: AuthService): () => void {
   return () => provider.load();
 }
+
+import { CollectionService } from './_services/collection.service';
+export function CollectionFactory(provider: CollectionService): () => Promise<boolean> {
+  return () => provider.load();
+}
+
 
 
 @NgModule({
@@ -58,6 +63,10 @@ export function AuthFactory(provider: AuthService): () => void {
     MatSnackBarModule,
   ],
   providers: [
+    CollectionService,
+    { provide: APP_INITIALIZER, useFactory: CollectionFactory,
+      deps: [CollectionService], multi: true },
+
     AuthService,
     { provide: APP_INITIALIZER, useFactory: AuthFactory,
       deps: [AuthService], multi: true }],
