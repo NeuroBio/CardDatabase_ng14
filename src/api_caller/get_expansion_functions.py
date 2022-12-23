@@ -27,7 +27,7 @@ def html_to_stringlist(response, subset):
         # remove footer html
         res = re.sub(r'\n+{{Setlist/n?m?footer[\s\S]+', '', res)
     else:
-        res = re.findall(r'({{Setlist/nmheader[\s\S]+?(?=\n{{Setlist/?n?mfooter))', res)[1]
+        res = re.findall(r'({{Setlist/?n?m?header[\s\S]+?(?=\n{{Setlist/?n?m?footer))', res)[1]
 
     # split rows into entries
     res = res.split('\n')
@@ -292,7 +292,6 @@ def make_csv(setName, path, subset = ''):
     except:
         params['section'] = seek_set_list(setName)
         res = requests.get(base_url, params=params).json()['parse']['wikitext']['*']
-
     card_entries = html_to_stringlist(res, subset != '')
 
     # more bulapedia nconsistencies

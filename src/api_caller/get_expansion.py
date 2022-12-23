@@ -3,10 +3,10 @@ from pathlib import Path
 from  get_expansion_functions import make_csv
 
 # get the list of expansions...
-with open('expansions.csv') as exp:
+with open('expansions.csv', encoding='utf-8') as exp:
     reader = csv.reader(exp)
     for row in reader:
-
+        
         # skip expansions is a .csv already exists
         if Path(f"expansions/{row[0]}.csv").exists():
             print(f"Skipping {row[0]}")

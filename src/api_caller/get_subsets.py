@@ -5,7 +5,11 @@ from  get_expansion_functions import make_csv
 # get the list of expansions...
 misc = [
     { 'set': 'Legendary Treasures', 'subset': 'Radiant Collection'},
-    { 'set': 'Generations', 'subset': 'Radiant Collection'}
+    { 'set': 'Generations', 'subset': 'Radiant Collection'},
+    { 'set': 'Brilliant Stars', 'subset': 'Trainer Gallery'},
+    { 'set': 'Astral Radiance', 'subset': 'Trainer Gallery'},
+    { 'set': 'Lost Origin', 'subset': 'Trainer Gallery'},
+    { 'set': 'Silver Tempest', 'subset': 'Trainer Gallery'},
 ]
 for set in misc:
 
