@@ -43,7 +43,6 @@ def row_to_data(row, setName):
     card_title, row = get_title(row, setName)
     card_type = get_type(row)
 
-
     # ***Watch the order below; some checks require multiple, pre-cleaned card properties***
 
     # convert all color types to pokemon
@@ -140,7 +139,8 @@ def get_title(row, setName):
                         # deck lists
                         card_title = re.search(r'(TCG ID\|)[^\|]+(\|)([^\|]+)', row).group(3)
                     except:
-                        card_title = re.search(r'[^\|]+(\|\[\[)([^\|\]]+)', row).group(2)
+                        card_title = re.search(r'[^\|]+(\|({{Mega}})?\[\[)([^\|\]]+)', row).group(3)
+                            
     # get special info about card and add to title
     special = re.search(r"<small>'''([^|]*)'{0,3}(</small>)?", row)
     if special is not None:
@@ -160,8 +160,13 @@ def get_type(row):
             # first encountered in Gym Heroes
             card_type = re.search(r'(?<=\]\]\|)[^|]+(?:|)', row).group(0) 
         except:
-            # first encountered in Neo Genesis
-            card_type = re.search(r'(?<=\}\}\|)[^|]+(?:|)', row).group(0)
+            try:
+                # first encountered in Neo Genesis
+                card_type = re.search(r'(?<=\}\}\|)[^|]+(?:|)', row).group(0)
+            except:
+                #freaking celebrations, man
+                card_type =  re.search('Rare Classic', row).group(0)
+
 
     # convert more descriptive trainer types in modern sets to just trainer
     if card_type in ['Item', 'Stadium', 'Supporter']:
@@ -286,6 +291,8 @@ def make_csv(setName, path, subset = ''):
 
     # make sure it is the set list
     try:
+        if subset:
+            raise Exception("Subsets cannot be handle with this code")
         re.search(r'==(Set)|(Card)|(Deck) list', res).group()
     # if not, is means that there are the wrong number of sections on the page :/
     # find the correct section number instead, and then try again
@@ -294,7 +301,7 @@ def make_csv(setName, path, subset = ''):
         res = requests.get(base_url, params=params).json()['parse']['wikitext']['*']
     card_entries = html_to_stringlist(res, subset != '')
 
-    # more bulapedia nconsistencies
+    # more bulapedia inconsistencies
     setName = setName.replace('Black Star Promos', 'Promo')
 
     card_sets = []
@@ -310,7 +317,7 @@ def make_csv(setName, path, subset = ''):
         else:
             card_sets.append([row_to_data(card, setName) for card in card_entries])
     except:
-        # print(f"There is some formatting error in the data not yet covered by the cleaning script. See parsed response text below...\n {card_entries}")
+        print(f"There is some formatting error in the data not yet covered by the cleaning script. {setName}")
         return
 
     i = 0
