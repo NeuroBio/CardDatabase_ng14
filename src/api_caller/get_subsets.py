@@ -11,6 +11,7 @@ misc = [
     { 'set': 'Lost Origin', 'subset': 'Trainer Gallery'},
     { 'set': 'Silver Tempest', 'subset': 'Trainer Gallery'},
     { 'set': 'Celebrations', 'subset': 'Classic Collection'},
+    { 'set': 'Crown Zenith', 'subset': 'Galarian Gallery' },
 ]
 for set in misc:
 

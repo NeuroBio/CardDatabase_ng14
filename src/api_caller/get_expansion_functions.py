@@ -37,11 +37,14 @@ def html_to_stringlist(response, subset):
     return res
 
 def row_to_data(row, setName):
+    # print(row)
     print_special = ''
     # row is returned here because any "special" info is parsed from
     # the row so it doesn't interfere with getting the type
     card_title, row = get_title(row, setName)
+    # print(card_title)
     card_type = get_type(row)
+    # print(card_type)
 
     # ***Watch the order below; some checks require multiple, pre-cleaned card properties***
 
@@ -101,8 +104,18 @@ def row_to_data(row, setName):
                 elif check2 is not None:
                     card_rarity = 'Promo'
                 elif check3 is not None:
-                    card_rarity = 'Alph Lithograph'
-                    print_special = check2.group(1)
+                    setType = check3.group(1)
+                    print_special = setType
+                    if setType == 'GGH':
+                        card_rarity = 'Holo Rare'
+                    elif setType == 'GGV':
+                        card_rarity = 'V+'
+                    elif setType == 'GGU':
+                        card_rarity = 'Full Art'
+                    elif setType == 'GGS':
+                        card_rarity = 'VStar'
+                    else:
+                        card_rarity = 'Alph Lithograph'
                 subset = False
 
         # internal subset (Aquapolis and Skyridge holos)
@@ -133,7 +146,7 @@ def get_title(row, setName):
             except:
                 try:
                     # first encountered in Neo Genesis
-                    card_title = re.search(r'(?<=TCG\|)[^\|\}]+', row).group(0)
+                    card_title = re.search(r'(?<=[TCG|OBP]\|)[^\|\}]+', row).group(0)
                 except:
                     try:
                         # deck lists
